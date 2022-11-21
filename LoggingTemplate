@@ -1,0 +1,70 @@
+//Logs Data
+functionName = "Function Name";
+referenceModule = "";
+referenceId = "";
+debug = true;
+errorList = list();
+debugList = list();
+infoList = list();
+//Required Variables
+//debugList.add({"Message":"Info Message"});
+//errorList.add({"Message":"Error Message"});
+//debugList.add({"Message":"Debug Message"});
+//
+try 
+{
+	//START FUNCTION HERE
+	
+	//END FUNCTION HERE
+	//Log out all error messages
+	if(debugList.size() > 0)
+	{
+		for each  debugLog in debugList
+		{
+			debugLog.put("Function_Name",functionName);
+			debugLog.put("Reference_Module",referenceModule);
+			debugLog.put("Reference_ID",referenceId);
+			debugLog.put("Log_Type","Debug");
+			debugLogCreateResponse = zoho.crm.createRecord("Logs",debugLog,{"trigger":{"workflow"}});
+			//info debugLogCreateResponse;
+		}
+	}
+	//Log out all error messages
+	if(errorList.size() > 0)
+	{
+		for each  errorLog in errorList
+		{
+			errorLog.put("Function_Name",functionName);
+			errorLog.put("Reference_Module",referenceModule);
+			errorLog.put("Reference_ID",referenceId);
+			errorLog.put("Log_Type","Error");
+			errorLogCreateResponse = zoho.crm.createRecord("Logs",errorLog,{"trigger":{"workflow"}});
+			//info errorLogCreateResponse;
+		}
+	}
+	//Log out all info messages
+	if(infoList.size() > 0)
+	{
+		for each  infoLog in infoList
+		{
+			infoLog.put("Function_Name",functionName);
+			infoLog.put("Reference_Module",referenceModule);
+			infoLog.put("Reference_ID",referenceId);
+			infoLog.put("Log_Type","Info");
+			infoLogCreateResponse = zoho.crm.createRecord("Logs",infoLog,{"trigger":{"workflow"}});
+			//info infoLogCreateResponse;
+		}
+	}
+}
+catch (err)
+{
+	info err;
+	catchErrorMap = Map();
+	catchErrorMap.put("Function_Name",functionName);
+	catchErrorMap.put("Reference_Module",referenceModule);
+	catchErrorMap.put("Reference_ID",referenceId);
+	catchErrorMap.put("Log_Type","Error");
+	catchErrorMap.put("Message",err);
+	catchErrorCreateResponse = zoho.crm.createRecord("Logs",catchErrorMap,{"trigger":{"workflow"}});
+	//info catchErrorCreateResponse;
+}
